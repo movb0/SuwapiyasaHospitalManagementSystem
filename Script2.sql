@@ -1,7 +1,5 @@
 USE `Suwapiyasa_system`;
-/* 
- #Q1– 121642781 –  s92082781
-*/
+
 CREATE VIEW ListofSurgeries AS
 SELECT patient.patient_id_number AS Patient_ID,
 CONCAT(patient.Initials, ' ', patient.Surname) AS Patient_Name,
@@ -13,9 +11,9 @@ JOIN Assigned_Patient_Location apl ON patient.patient_id_number = apl.patient_id
 JOIN Location ON apl.location_id = location.location_id
 JOIN Surgery  ON patient.patient_id_number = surgery.patient_id_number;
 /* 
- #Q2 i– 121642781 –  s92082781CREATE TABLE 
+ Table Creation
 */
---  Table creation
+
 CREATE TABLE `MedInfo` (
   `MedName` VARCHAR(20) NOT NULL ,
   `QuantityAvailable` INT NOT NULL,
@@ -27,9 +25,7 @@ CREATE TRIGGER `InsertMedInfo` AFTER INSERT ON `Medication` FOR EACH ROW BEGIN
     INSERT INTO MedInfo (MedName, QuantityAvailable, ExpirationDate)
         VALUES (new.name, new.quantity_on_hand, new.expiration_date);
   END;;
-/* 
- #Q2 ii– 121642781 –  s92082781
-*/
+
 DELIMITER ;; 
 CREATE TRIGGER `UpdateMedInfo` AFTER UPDATE ON `Medication` FOR EACH ROW BEGIN
     IF (old.name != new.name) OR (old.quantity_on_hand != new.quantity_on_hand) OR (old.expiration_date != new.expiration_date)
@@ -42,16 +38,12 @@ CREATE TRIGGER `UpdateMedInfo` AFTER UPDATE ON `Medication` FOR EACH ROW BEGIN
     END IF;
   END;;
 DELIMITER ;
-/* 
- #Q2 iii– 121642781 –  s92082781CREATE TABLE 
-*/
+
 DELIMITER ;;
 CREATE TRIGGER `deleteMedInfo` AFTER DELETE ON `Medication` FOR EACH ROW BEGIN
     DELETE FROM MedInfo WHERE MedName = old.name;
   END;;
-  /* 
- #Q3 – 121642781 –  s92082781CREATE TABLE 
-*/
+
 DELIMITER //
 CREATE PROCEDURE number_ofMedications_taken_by_a_patient(INOUT Medication_count INT, IN param_patient_id_number VARCHAR(20))
 BEGIN
@@ -63,9 +55,7 @@ CALL number_ofMedications_taken_by_a_patient(@Medication_count,'PID2025');
 SELECT @Medication_count AS  medications_count_of_a_patient;
 
 drop procedure number_ofMedications_taken_by_a_patient;
-/* 
- #Q4 – 121642781 –  s92082781CREATE TABLE 
-*/
+
 
 DELIMITER $$
 CREATE FUNCTION expiration_of_a_medication (Med_expiration_date DATE)
@@ -82,9 +72,7 @@ SELECT code,name,quantity_on_hand,quantity_ordered,cost,expiration_of_a_medicati
 FROM Medication
 WHERE expiration_of_a_medication(expiration_date) < 30;
 
-/* 
- #Q6– 121642781 –  s92082781CREATE TABLE 
-*/
+
  CREATE TABLE WorkingStaffAddress (
   StaffID VARCHAR(20) PRIMARY KEY,
   Address VARCHAR(250) NOT NULL
